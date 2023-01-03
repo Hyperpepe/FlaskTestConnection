@@ -1,4 +1,7 @@
 import flask
+import json
+
+
 api = flask.Flask(__name__)
 @api.route('/post', methods=['post'])
 def chose():
@@ -8,9 +11,6 @@ def chose():
     UUID = flask.request.json.get('UUID')
     if url1 and url2 and url3:
         ren = {'msg': 'COPY_THAT', 'UUID': UUID, 'msg_code': 202}
-        stream = newtxt(url1, url2, url3, UUID)
-        thread = threading.Thread(target=run, args=(stream,), daemon=True)
-        thread.start()
     else:
         ren = {'msg': 'ERROR_NONE_ARGS', 'msg_code': 404}
     return json.dumps(ren, ensure_ascii=False)
