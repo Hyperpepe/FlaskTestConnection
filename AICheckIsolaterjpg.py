@@ -26,7 +26,7 @@ body = {
     "operator": " AICheckIsolaterjpg",
     "listenPortInfo": {
         "IpAddress": "192.168.1.254",
-        "Port": "5000",
+        "Port": "17888",
     },
     " IsolaterInfo": {
         "issueNumber": "221228-51411-1",
