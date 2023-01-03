@@ -1,6 +1,6 @@
 import flask
 import json
-
+import cv2
 
 api = flask.Flask(__name__)
 @api.route('/post', methods=['post'])
