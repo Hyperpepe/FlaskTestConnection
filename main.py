@@ -1,49 +1,53 @@
 import flask
+from flask import request
 import json
+import base64
+import io
 import cv2
 
 api = flask.Flask(__name__)
-@api.route('/post', methods=['post'])
+
+
+@api.route('/AICheckIsolaterjpg', methods=['post'])
 def chose():
-    url1 = flask.request.json.get('A')
-    url2 = flask.request.json.get('B')
-    url3 = flask.request.json.get('C')
-    UUID = flask.request.json.get('UUID')
-    if url1 and url2 and url3:
-        ren = {'msg': 'COPY_THAT', 'UUID': UUID, 'msg_code': 202}
-    else:
-        ren = {'msg': 'ERROR_NONE_ARGS', 'msg_code': 404}
+    data = request.get_json()
+    # print(data)
+    operator = data['operator']
+
+    # 读取 listenPortInfo 中的 IpAddress 和 Port
+    listen_port_info = data['listenPortInfo']
+    isolater_info = data['IsolaterInfo']
+    pic_info = data['picinfo']
+
+    ip_address = listen_port_info['IpAddress']
+    port = listen_port_info['Port']
+
+    # 读取 IsolaterInfo 中的 issueNumber、IsolaterID、IsolaterName 和 IsolaterCmd
+    # isolater_info = data['IsolaterInfo']
+    # issue_number = isolater_info['issueNumber']
+    # isolater_id = isolater_info['IsolaterID']
+    # isolater_name = isolater_info['IsolaterName']
+    # isolater_cmd = isolater_info['IsolaterCmd']
+
+    # 读取 picinfo 中的 APicInfo、BPicInfo 和 CPicInfo
+    # pic_info = data['picinfo']
+    # a_pic_info = pic_info['APicInfo']
+    # b_pic_info = pic_info['BPicInfo']
+    # c_pic_info = pic_info['CPicInfo']
+
+
+
+
+    ren = {'msg': 'COPY_THAT','args': data,'msg_code': 202}
+
+    # ren = {'msg': 'ERROR_NONE_ARGS', 'msg_code': 404}
     return json.dumps(ren, ensure_ascii=False)
-# 检查rtsp流是否可用
-@api.route('/CheckRTSP', methods=['post'])
-def checkRTSP():
-    # source_address = request.remote_addr
-    url1 = flask.request.json.get('A')
-    url2 = flask.request.json.get('B')
-    url3 = flask.request.json.get('C')
-    if not url1 or not url2 or not url3:
-        # 如果缺少参数，则返回错误信息
-        ren = {'msg': 'ERROR_NONE_ARGS', 'msg_code': 404}
-        return json.dumps(ren, ensure_ascii=False)
-    if url1 and url2 and url3:
-        urls = {'A': url1, 'B': url2, 'C': url3}
-        invalid_urls = {}
-        for key, url in urls.items():
-            cap = cv2.VideoCapture(url)
-            if not cap.isOpened():
-                invalid_urls[key] = url
-        if invalid_urls:
-            invalid_urls = list(invalid_urls.keys())
-            ren = {'msg': 'ERROR_INVALID_URLS', 'invalid_urls': invalid_urls}
-        else:
-            ren = {'msg': 'STREAM_AVAILABLE', 'msg_code': 2048}
-    else:
-        ren = {'msg': 'ERROR_NONE_ARGS', 'msg_code': 404}
-    return json.dumps(ren, ensure_ascii=False)
+
 @api.route('/test', methods=['post'])
 def test():
     ren = {'msg': 'OK', 'msg_code': 101}
     return json.dumps(ren, ensure_ascii=False)
+
 
 if __name__ == '__main__':
     api.run(port=5000, debug=True, host='0.0.0.0')

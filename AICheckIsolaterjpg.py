@@ -8,6 +8,7 @@
 '''
 
 import requests  # 导包
+import json
 
 host = "http://192.168.1.254:5000/"  # 部署的服务器地址，根据main.py中的服务地址而改变
 
@@ -15,25 +16,29 @@ login_url = "/AICheckIsolaterjpg"  # 请求地址
 
 url = host + login_url  # 拼接地址
 
+with open('1_detect_result' + '.json', 'rb') as p:
+    params = json.load(p)  # 加载json文件
+    source = params["A-result-pic"]
+
 # 参数
 body = {
-    {
-        "operator": " AICheckIsolaterjpg",
-        "listenPortInfo": {
-            "IpAddress": "192.168.3.2",
-            "Port": "17888",
-        },
-        " IsolaterInfo": {
-            " issueNumber ": "221228-51411-1",
-            "IsolaterID": "51411",
-            "IsolaterName": "I 间隔隔离刀闸",
-            "IsolaterCmd": "1"
-        },
-        "picinfo": {
-            "APicInfo": "data: image/jpeg;base64, ……",
-            "BPicInfo": "data: image/jpeg;base64, ……",
-            "CPicInfo": "data: image/jpeg;base64, ……"
-        }
+
+    "operator": " AICheckIsolaterjpg",
+    "listenPortInfo": {
+        "IpAddress": "192.168.3.2",
+        "Port": "17888",
+    },
+    " IsolaterInfo": {
+        "issueNumber": "221228-51411-1",
+        "IsolaterID": "51411",
+        "IsolaterName": "I 间隔隔离刀闸",
+        "IsolaterCmd": "1"
+    },
+    "picinfo": {
+        "APicInfo": "data: image/jpeg;base64," + source,
+        "BPicInfo": "data: image/jpeg;base64," + source,
+        "CPicInfo": "data: image/jpeg;base64," + source
+
     }
 }
 # 发送请求
