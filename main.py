@@ -1,16 +1,49 @@
-# 这是一个示例 Python 脚本。
+import flask
+api = flask.Flask(__name__)
+@api.route('/post', methods=['post'])
+def chose():
+    url1 = flask.request.json.get('A')
+    url2 = flask.request.json.get('B')
+    url3 = flask.request.json.get('C')
+    UUID = flask.request.json.get('UUID')
+    if url1 and url2 and url3:
+        ren = {'msg': 'COPY_THAT', 'UUID': UUID, 'msg_code': 202}
+        stream = newtxt(url1, url2, url3, UUID)
+        thread = threading.Thread(target=run, args=(stream,), daemon=True)
+        thread.start()
+    else:
+        ren = {'msg': 'ERROR_NONE_ARGS', 'msg_code': 404}
+    return json.dumps(ren, ensure_ascii=False)
+# 检查rtsp流是否可用
+@api.route('/CheckRTSP', methods=['post'])
+def checkRTSP():
+    # source_address = request.remote_addr
+    url1 = flask.request.json.get('A')
+    url2 = flask.request.json.get('B')
+    url3 = flask.request.json.get('C')
+    if not url1 or not url2 or not url3:
+        # 如果缺少参数，则返回错误信息
+        ren = {'msg': 'ERROR_NONE_ARGS', 'msg_code': 404}
+        return json.dumps(ren, ensure_ascii=False)
+    if url1 and url2 and url3:
+        urls = {'A': url1, 'B': url2, 'C': url3}
+        invalid_urls = {}
+        for key, url in urls.items():
+            cap = cv2.VideoCapture(url)
+            if not cap.isOpened():
+                invalid_urls[key] = url
+        if invalid_urls:
+            invalid_urls = list(invalid_urls.keys())
+            ren = {'msg': 'ERROR_INVALID_URLS', 'invalid_urls': invalid_urls}
+        else:
+            ren = {'msg': 'STREAM_AVAILABLE', 'msg_code': 2048}
+    else:
+        ren = {'msg': 'ERROR_NONE_ARGS', 'msg_code': 404}
+    return json.dumps(ren, ensure_ascii=False)
+@api.route('/test', methods=['post'])
+def test():
+    ren = {'msg': 'OK', 'msg_code': 101}
+    return json.dumps(ren, ensure_ascii=False)
 
-# 按 Shift+F10 执行或将其替换为您的代码。
-# 按 双击 Shift 在所有地方搜索类、文件、工具窗口、操作和设置。
-
-
-def print_hi(name):
-    # 在下面的代码行中使用断点来调试脚本。
-    print(f'Hi, {name}')  # 按 Ctrl+F8 切换断点。
-
-
-# 按间距中的绿色按钮以运行脚本。
 if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# 访问 https://www.jetbrains.com/help/pycharm/ 获取 PyCharm 帮助
+    api.run(port=5000, debug=True, host='0.0.0.0')
