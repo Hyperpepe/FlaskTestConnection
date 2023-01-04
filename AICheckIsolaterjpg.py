@@ -28,7 +28,7 @@ body = {
         "IpAddress": "192.168.1.254",
         "Port": "17888",
     },
-    " IsolaterInfo": {
+    "IsolaterInfo": {
         "issueNumber": "221228-51411-1",
         "IsolaterID": "51411",
         "IsolaterName": "I 间隔隔离刀闸",
