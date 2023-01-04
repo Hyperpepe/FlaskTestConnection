@@ -16,7 +16,7 @@ login_url = "/AICheckIsolaterjpg"  # 请求地址
 
 url = host + login_url  # 拼接地址
 
-with open('1_detect_result' + '.json', 'rb') as p:
+with open('1_detect_result.json', 'rb') as p:
     params = json.load(p)  # 加载json文件
     source = params["A-result-pic"]
 
