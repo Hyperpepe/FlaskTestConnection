@@ -1,6 +1,7 @@
 import flask
 from flask import json,request
 from utils import check_args_ipaddress,check_args_picinfo,check_args_IsolaterInfo
+
 api = flask.Flask(__name__)
 
 
@@ -19,10 +20,10 @@ def main():
 
     return json.dumps(ren, ensure_ascii=False)
 
-
 @api.route('/test', methods=['post'])
 def test():
     ren = {'msg': 'OK', 'msg_code': 101}
     return json.dumps(ren, ensure_ascii=False)
+
 if __name__ == '__main__':
     api.run(port=5000, debug=True, host='0.0.0.0')

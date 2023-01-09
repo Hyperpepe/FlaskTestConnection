@@ -10,7 +10,7 @@
 import requests  # 导包
 import json
 
-host = "http://192.168.1.254:5000/"  # 部署的服务器地址，根据main.py中的服务地址而改变
+host = "http://192.168.3.9:5000/"  # 部署的服务器地址，根据main.py中的服务地址而改变
 
 login_url = "/AICheckIsolaterjpg"  # 请求地址
 
@@ -25,7 +25,7 @@ body = {
 
     "operator": " AICheckIsolaterjpg",
     "listenPortInfo": {
-        "IpAddress": "192.168.1.254",
+        "IpAddress": "192.168.3.9",
         "Port": "17888",
     },
     "IsolaterInfo": {

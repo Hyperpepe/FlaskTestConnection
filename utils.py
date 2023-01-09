@@ -25,12 +25,13 @@ def base64_decode_jpg(picinfo, picname):
     base64_code = re.sub('^data:image/.+;base64,', '', picinfo)
     image_data = base64.b64decode(base64_code)
     buf = io.BytesIO(image_data)
-    filename = 'image' + picname + '.jpg'
+    filename = 'image' + picname + '.png'
     try:
-        with open(filename, 'wb') as f:
-            f.write(buf.getbuffer())
-        check_image_valid('./filename')
-        print("图片可以读取")
+        with open('./picinfo/'+filename, 'wb') as f:
+            # f.write(buf.getbuffer())
+            f.write(image_data)
+            check_image_valid('./picinfo/'+filename)
+            print("图片可以读取")
         return True
     except Exception:
         return picname
