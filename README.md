@@ -51,7 +51,7 @@ Recive_post.py#模拟应用服务开放端口post算法服务器脚本
 下面开始运行测试判定代码。
 
 ```json
-with open('1_detect_result.json', 'rb') as p:
+with open('base64_incode.json', 'rb') as p:
     params = json.load(p)  # 加载json文件
     source = params["A-result-pic"]
 //可以加载json文件只需要键值对即可

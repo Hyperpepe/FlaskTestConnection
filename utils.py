@@ -10,16 +10,7 @@ import socket
 import threading
 import re
 
-api = flask.Flask(__name__)
-
-
-def checkjpg(base64_code):
-    image_data = base64.b64decode(base64_code)
-    buf = io.BytesIO(image_data)
-    buf = np.frombuffer(buf.getbuffer(), np.uint8)
-    if cv2.imdecode(buf, cv2.IMREAD_COLOR):
-        return
-
+# 检查转化后的图片是否可以读取
 def check_image_valid(image_path):
     image = cv2.imread(image_path)
     if image is None:
@@ -28,6 +19,8 @@ def check_image_valid(image_path):
     else:
         # 图片加载成功，完整
         return True
+
+# 解析base64编码的图片
 def base64_decode_jpg(picinfo, picname):
     base64_code = re.sub('^data:image/.+;base64,', '', picinfo)
     image_data = base64.b64decode(base64_code)
@@ -42,8 +35,7 @@ def base64_decode_jpg(picinfo, picname):
     except Exception:
         return picname
 
-
-
+# ping 通端口返回True
 def request_post(ip_address, port, bodyin):
     host = "http://" + ip_address + ":" + port + "/"
     login_url = "/AICheckIsolaterjpg"
@@ -51,8 +43,14 @@ def request_post(ip_address, port, bodyin):
     r = requests.post(url=url, json=bodyin)
     print(r.text)
 
+# 写入json文件
+def write_json_data_to_file(params):
+    with open('yolov5_config.json', 'w') as r:
+        json.dump(params, r)
 
-def check_args_IP(data):
+
+
+def check_args_ipaddress(data):
     # ret = False
     if data:
         operator = data['operator']
@@ -117,37 +115,14 @@ def check_args_picinfo(data):
             reta = base64_decode_jpg(a_pic_info, 'APicInfo')
             retb = base64_decode_jpg(b_pic_info, 'BPicInfo')
             retc = base64_decode_jpg(c_pic_info, 'CPicInfo')
-            if reta and retc and retb :
-                print("以下参数符合条件:", reta, retb, retc)
+            if reta and retc and retb:
+                print("base64图片检查——以下参数符合条件:", reta, retb, retc)
                 return True
             else:
-                print("以下参数不符合条件:", reta, retb, retc)
+                print("base64图片检查——以下参数不符合条件:", reta, retb, retc)
                 return False
     else:
         print("pic_info 不完整")
         return False
 
 
-@api.route('/AICheckIsolaterjpg', methods=['post'])
-def chose():
-    data = request.get_json()
-    IPret = check_args_IP(data)
-    Isoret = check_args_IsolaterInfo(data)
-    Picret = check_args_picinfo(data)
-    isArgsOk = IPret and Isoret and Picret
-    if isArgsOk:
-        ren = {'msg': 'COPY_THAT', 'msg_code': 202}
-    else:
-        ren = {'msg': 'ERROR_NONE_ARGS','msg_code': 404}
-        print(IPret,Isoret,Picret)
-
-    return json.dumps(ren, ensure_ascii=False)
-
-@api.route('/test', methods=['post'])
-def test():
-    ren = {'msg': 'OK', 'msg_code': 101}
-    return json.dumps(ren, ensure_ascii=False)
-
-
-if __name__ == '__main__':
-    api.run(port=5000, debug=True, host='0.0.0.0')
