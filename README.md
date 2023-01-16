@@ -20,7 +20,8 @@
 
 
 
-```python
+```
+
 AICheckIsolaterjpg.py#模拟应用服务post算法服务器脚本
 
 AICheckIsolaterREjpg.py#模拟算法服务器pos应用服务检测结果的脚本
@@ -29,7 +30,8 @@ main.py#算法服务的json校验代码
 
 Recive_post.py#模拟应用服务开放端口post算法服务器脚本
 
-1_detect_result.json#存储base64编码的json文件
+base64_incode.json#存储base64编码的json文件
+
 ```
 
 ## 测试流程
