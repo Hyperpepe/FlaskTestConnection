@@ -1,12 +1,13 @@
 import flask
 from flask import json,request
 from utils import check_args_ipaddress,check_args_picinfo,check_args_IsolaterInfo
-
+import time
 api = flask.Flask(__name__)
 
 
 @api.route('/AICheckIsolaterjpg', methods=['post'])
 def main():
+    # time.sleep(2)
     data = request.get_json()
     IPret = check_args_ipaddress(data)
     Isoret = check_args_IsolaterInfo(data)
