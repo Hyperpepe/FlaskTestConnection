@@ -7,7 +7,10 @@ import requests
 class Data_flask_creaer:
     def __int__(self,data):
         self.data = data
-
+        if data:
+            self.operator = data['operator']
+            self.listen_port_info = data.get('listenPortInfo')
+            self.isolater_info = data.get('IsolaterInfo')
     def check_image_valid(self,image_path):
         image = cv2.imread(image_path)
         if image is None:

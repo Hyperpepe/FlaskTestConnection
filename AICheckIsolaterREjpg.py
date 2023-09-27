@@ -10,10 +10,10 @@
 
 import json
 import requests
-host = "http://192.168.1.254:5000/"  # 部署的服务器地址，根据main.py中的服务地址而改变
+host = "http://192.168.3.8:5000/"  # 部署的服务器地址，根据main.py中的服务地址而改变
 login_url = "/AICheckIsolaterREjpg"  # 请求地址
 url = host + login_url  # 拼接地址
-with open('base64_incode.json', 'rb') as p:
+with open('serverTestment/base64_incode_opened.json', 'rb') as p:
     params = json.load(p)  # 加载json文件
     source = params["A-result-pic"]
 # 参数
